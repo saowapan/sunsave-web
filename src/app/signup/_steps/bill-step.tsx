@@ -32,7 +32,7 @@ export function BillStep({ state, update }: StepProps) {
     const result = billSchema.safeParse(value);
 
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? 'Please enter a valide amount');
+      setError(result.error.issues[0]?.message ?? 'Please enter a valid amount');
       return;
     }
 
@@ -52,7 +52,7 @@ export function BillStep({ state, update }: StepProps) {
         What is your average monthly electricity bill?
       </h2>
       <p className='mt-2 text-gray-600'>
-        We use thi to estimate your energy usage and recommend the right system size.
+        We use this to estimate your energy usage and recommend the right system size.
       </p>
       <div>
         <div className="mt-6">

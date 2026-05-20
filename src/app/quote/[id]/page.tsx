@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { api, ApiError } from '@/lib/api-client';
@@ -15,22 +16,20 @@ interface PageProps {
 }
 
 /**
- * Fetch the quote once, server-side. Shared by both generateMetadata and
- * the page component — Next.js dedupes identical fetches within a request,
- * but since we use our api client (not raw fetch) we fetch explicitly and
- * pass nothing between them; each calls the API. For a demo that's fine.
+ * Fetch the quote once, server-side. Both generateMetadata and the page
+ * component call this; React.cache() dedupes them within a single request
+ * so we only hit the API once.
  */
-
-async function getQuote(id: string): Promise<QuoteResponse | null> {
+const getQuote = cache(async (id: string): Promise<QuoteResponse | null> => {
   try {
     return await api.getQuote(id);
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
       return null;
     }
-    throw error;  // genuine errors (500, network) should surface, not 404
+    throw error; // genuine errors (500, network) should surface, not 404
   }
-}
+});
 
 export async function generateMetadata({ params, }: PageProps): Promise<Metadata> {
   const { id } = await params;
@@ -48,7 +47,7 @@ export default async function QuotePage({ params }: PageProps) {
   const quote = await getQuote(id);
 
   if (!quote) {
-    notFound(); // rednder not-found.tsx
+    notFound(); // renders not-found.tsx
   }
 
   return (
