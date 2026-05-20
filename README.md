@@ -12,6 +12,14 @@ small typed HTTP client.
 > **[API repo README](../sunsave-api/README.md)** — that is the main writeup.
 > Not affiliated with Sunsave; a portfolio demo using illustrative data.
 
+## Live demo
+
+- **Web:** <https://sunsave-web.vercel.app/>
+- **API:** <https://sunsave-api.onrender.com/api/health>
+
+The API is hosted on Render's free tier, so the first request after a period
+of inactivity may take ~30 seconds to wake the instance.
+
 ---
 
 ## Highlights
