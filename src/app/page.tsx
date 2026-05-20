@@ -16,7 +16,7 @@ export default function Home() {
       </p>
       <Link
         href="/signup"
-        className="mt-8 rounded-full bg-leaf-600 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all hover:bg-leaf-500 hover:shadow-xl"
+        className="mt-8 rounded-full bg-solar-600 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all hover:bg-leaf-500 hover:shadow-xl"
       >
         Calculate my savings →
       </Link>
