@@ -21,7 +21,7 @@ export default function Home() {
         Calculate my savings →
       </Link>
       <p className="mt-6 text-xs text-stone-400">
-        A portfolio demo project · not affiliated with Sunsave
+        A portfolio demo project
       </p>
     </main>
   );
