@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { QuoteInputs } from './contracts';
 
 /**
@@ -13,32 +13,28 @@ export type WizardState = Partial<QuoteInputs>;
 
 const STORAGE_KEY = 'sunsave:wizard-state';
 
+function readStorage(): WizardState {
+  // SSR: window is undefined, return empty state.
+  // Client: read once, synchronously, so first render already has data.
+  //
+  // This component is rendered under Suspense with useSearchParams(), so
+  // SSR always falls back to the skeleton — the wizard form never renders
+  // on the server. That means there's no SSR/client mismatch to worry about.
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as WizardState) : {};
+  } catch {
+    // sessionStorage can throw in some privacy modes
+    return {};
+  }
+}
+
 /**
  * useWizardState — read/write wizard form state from sessionStorage.
- *
- * Why sessionStorage and not localStorage?
- *   - Cleared when the tab closes — appropriate for an unfinished signup.
- *   - Not shared across tabs — each tab is one "session" of the wizard.
- *
- * Why not React Context?
- *   - Context loses state on refresh; sessionStorage survives it.
- *   - Each step page is its own component tree; no shared parent to host context naturally.
  */
 export function useWizardState() {
-  // null = "haven't read storage yet" (during SSR + first render)
-  // {} or {...} = the actual state
-  const [state, setState] = useState<WizardState | null>(null);
-
-  // On first client-side render, hydrate from sessionStorage
-  useEffect(() => {
-    try {
-      const raw = sessionStorage.getItem(STORAGE_KEY);
-      setState(raw ? (JSON.parse(raw) as WizardState) : {});
-    } catch {
-      // sessionStorage can throw in some privacy modes; fall back to fresh
-      setState({});
-    }
-  }, []);
+  const [state, setState] = useState<WizardState>(readStorage);
 
   // Update a single field and persist
   const update = useCallback(<K extends keyof QuoteInputs>(
@@ -46,7 +42,7 @@ export function useWizardState() {
     value: QuoteInputs[K],
   ) => {
     setState((prev) => {
-      const next = { ...(prev ?? {}), [key]: value };
+      const next = { ...prev, [key]: value };
       try {
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {

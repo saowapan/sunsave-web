@@ -44,13 +44,13 @@ function WizardInner() {
   // Redirect to the first step if the URL has no valid step.
   // This is a side effect, so it lives in an effect — never in render.
   useEffect(() => {
-    if (wizard.state !== null && !stepIsValid) {
+    if (!stepIsValid) {
       router.replace(`/signup?step=${FIRST_STEP}`);
     }
-  }, [wizard.state, stepIsValid, router]);
+  }, [stepIsValid, router]);
 
-  // Still loading sessionStorage, or about to redirect — show skeleton.
-  if (wizard.state === null || !stepIsValid) {
+  // About to redirect — show skeleton.
+  if (!stepIsValid) {
     return <WizardSkeleton />;
   }
 
