@@ -17,7 +17,7 @@ small typed HTTP client.
 - **Web:** <https://sunsave-web.vercel.app/>
 - **API:** <https://sunsave-api.onrender.com/api/health>
 
-The API is hosted on Render's free tier, so the first request after a period
+Note: The API is hosted on Render's free tier, so the first request after a period
 of inactivity may take ~30 seconds to wake the instance.
 
 ---
@@ -26,8 +26,7 @@ of inactivity may take ~30 seconds to wake the instance.
 
 - **URL-driven wizard.** The current step lives in the query string
   (`/signup?step=region`), so the flow is shareable, refresh-safe, and works
-  with the browser back button. Answers persist in `sessionStorage` and are
-  cleared after a successful submit.
+  with the browser back button. (using `sessionStorage`)
 - **Server-rendered quote pages.** `/quote/:id` is an async server component
   that fetches on the server and ships fully-rendered HTML, with dynamic
   `generateMetadata` so a shared link previews the actual savings figure.
@@ -37,35 +36,6 @@ of inactivity may take ~30 seconds to wake the instance.
 - **Shared validation rules.** The wizard validates against the same Zod
   schema shape the API enforces, so client and server agree on what a valid
   quote request is.
-
----
-
-## Project structure
-
-```
-src/
-├── app/
-│   ├── page.tsx              # landing page
-│   ├── layout.tsx            # fonts (Fraunces + Outfit) + theme
-│   ├── signup/
-│   │   ├── page.tsx          # wizard router (reads ?step=)
-│   │   ├── _components/      # OptionGrid, BackLink
-│   │   └── _steps/           # one component per step
-│   └── quote/[id]/
-│       ├── page.tsx          # server-rendered results
-│       ├── share-button.tsx  # client island
-│       ├── loading.tsx       # Suspense fallback
-│       └── not-found.tsx     # 404 state
-└── lib/
-    ├── contracts.ts          # shared types + Zod schemas (see note below)
-    ├── api-client.ts         # typed API façade
-    ├── use-wizard-state.ts   # sessionStorage-backed wizard state hook
-    └── wizard-steps.ts       # step order, labels, navigation helpers
-```
-
-> **Note:** `contracts.ts` currently duplicates the API's domain types. The
-> planned improvement is a shared workspace package as the single source of
-> truth — see the API README's "What I would do next".
 
 ---
 
@@ -83,5 +53,3 @@ pnpm run dev                   # http://localhost:3001
 The dev server runs on **port 3001** (the API uses 3000).
 
 ---
-
-_A portfolio demo by May Kongpia. Not affiliated with Sunsave._
