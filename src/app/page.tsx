@@ -8,7 +8,7 @@ export default function Home() {
       </p>
       <h1 className="mt-4 font-display text-5xl font-semibold leading-tight sm:text-6xl">
         Go solar for{' '}
-        <span className="bg-leaf-600">£0 upfront</span>
+        <span className="text-leaf-600">£0 upfront</span>
       </h1>
       <p className="mt-5 max-w-xl text-lg text-stone-600">
         Get an instant estimate of your savings, system size, and monthly
