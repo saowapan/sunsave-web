@@ -1,25 +1,27 @@
-import { api } from '@/lib/api-client';
+import Link from 'next/link';
 
-export default async function Home() {
-  let backendStatus: string;
-  let quoteCount = 0;
-
-  try {
-    const quotes = await api.listRecentQuotes(5);
-    backendStatus = 'connected';
-    quoteCount = quotes.length;
-  } catch (error) {
-    backendStatus = `error: ${error instanceof Error ? error.message : 'unknown'}`;
-  }
-
+export default function Home() {
   return (
-    <main className='min-h-screen p-8'>
-      <h1 className='text-2xl font-bold'>Sunsave Demo</h1>
-      <p className='mt-4'>
-        Backedn status: <strong>{backendStatus}</strong>
+    <main className="relative mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center px-4 text-center">
+      <p className="font-body text-sm font-medium uppercase tracking-widest text-leaf-600">
+        Solar, simplified
       </p>
-      <p>
-        Found {quoteCount} recent quotes from the API.
+      <h1 className="mt-4 font-display text-5xl font-semibold leading-tight sm:text-6xl">
+        Go solar for{' '}
+        <span className="text-sky-500">£0 upfront</span>
+      </h1>
+      <p className="mt-5 max-w-xl text-lg text-stone-600">
+        Get an instant estimate of your savings, system size, and monthly
+        subscription. Takes less than a minute.
+      </p>
+      <Link
+        href="/signup"
+        className="mt-8 rounded-full bg-leaf-600 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all hover:bg-leaf-500 hover:shadow-xl"
+      >
+        Calculate my savings →
+      </Link>
+      <p className="mt-6 text-xs text-stone-400">
+        A portfolio demo project · not affiliated with Sunsave
       </p>
     </main>
   );
